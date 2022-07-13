@@ -12,6 +12,7 @@ inputs:
     required: false
   cache-key:
     description: "Additional cache key component (optional)"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -24,6 +25,7 @@ runs:
   - name: bootstrap-vcpkg
     working-directory: ${{ github.workspace }}\vcpkg
     run: bootstrap-vcpkg.bat
+    shell: cmd
   - name: vcpkg-dry-run
     working-directory: ${{ github.workspace }}\vcpkg
     shell: cmd
