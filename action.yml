@@ -29,7 +29,7 @@ runs:
   - name: vcpkg-dry-run
     working-directory: ${{ github.workspace }}\vcpkg
     shell: cmd
-    run:
+    run: |
       set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
       mkdir %VCPKG_DEFAULT_BINARY_CACHE%
       vcpkg install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
