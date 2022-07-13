@@ -1,0 +1,46 @@
+name: vcpkg-action
+description: Simple action to run vcpkg and cache results
+inputs:
+  pkgs:
+    description: "Which packages to build"
+    required: true
+  triplet:
+    description: "vcpkg triplet to use"
+    required: true
+  extra-args:
+    description: "Extra vcpkg command line args (optional)"
+    required: false
+  cache-key:
+    description: "Additional cache key component (optional)"
+runs:
+  using: "composite"
+  steps:
+  - name: checkout-vcpkg
+    uses: actions/checkout@master
+    with:
+      path: ${{ github.workspace }}\vcpkg
+      repository: microsoft/vcpkg
+      depth: 1
+  - name: bootstrap-vcpkg
+    working-directory: ${{ github.workspace }}\vcpkg
+    run: bootstrap-vcpkg.bat
+  - name: vcpkg-dry-run
+    working-directory: ${{ github.workspace }}\vcpkg
+    shell: cmd
+    run:
+      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
+      mkdir %VCPKG_DEFAULT_BINARY_CACHE%
+      vcpkg install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+  - name: cache-vcpkg-archives
+    if: startsWith(github.ref, 'refs/tags/v') != true
+    id: cache-vcpkg-archives
+    uses: pat-s/always-upload-cache@v3
+    with:
+      path: ${{ github.workspace }}/vcpkg_cache
+      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles('vcpkg/vcpkg_dry_run.txt') }}-main
+  - name: install-depends
+    shell: cmd
+    working-directory: ${{ github.workspace }}\vcpkg
+    run: |
+      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
+      vcpkg install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
