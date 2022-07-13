@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  test:
+    runs-on: windows-2019
+    name: Test the vcpkg-action action
+    steps:
+      - uses: actions/checkout@v3
+      - name: vcpkg build
+        uses: ./
+        with:
+          pkgs: boost-date-time
+          triplet: x64-windows-release
+      - name: tree
+        shell: cmd
+        run: tree
