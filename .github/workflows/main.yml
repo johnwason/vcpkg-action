@@ -25,6 +25,8 @@ jobs:
         with:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
+          cache-key: ${{ matrix.config.os }}
       - name: tree
+        if: runner.os == 'Windows'
         shell: cmd
         run: tree
