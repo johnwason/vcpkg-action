@@ -7,15 +7,24 @@ on:
 
 jobs:
   test:
-    runs-on: windows-2019
-    name: Test the vcpkg-action action
+    runs-on: ${{ matrix.config.os }}
+    name: test-vcpkg-action
+    strategy:
+      matrix:
+        config:
+        - os: ubuntu-20.04
+          vcpkg_triplet: x64-linux-release
+        - os: macos-11
+          vcpkg_triplet: x64-osx-release
+        - os: windows-2019
+          vcpkg_triplet: x64-windows-release
     steps:
       - uses: actions/checkout@v3
       - name: vcpkg build
         uses: ./
         with:
           pkgs: boost-date-time
-          triplet: x64-windows-release
+          triplet: ${{ matrix.config.vcpkg_triplet }}
       - name: tree
         shell: cmd
         run: tree
