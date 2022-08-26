@@ -43,6 +43,9 @@ Simple usage example:
     # Additional string to add to cache key. If using a build matrix or building different configurations
     # on the same operating system, be sure to include an additional cache key to separate the caches. (optional)
     cache-key: ''
+    # vcpkg revision to checkout
+    # A valid git ref; if empty, it defaults to the latest vcpkg stable release.
+    revision: ''
 
 ```
 
@@ -71,5 +74,6 @@ jobs:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
           cache-key: ${{ matrix.config.os }}
+          revision: master
 ```
 
