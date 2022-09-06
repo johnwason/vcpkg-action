@@ -17,15 +17,35 @@ inputs:
     description: "Disable cache (useful for release builds)"
     required: false
     default: 'false'
+  revision:
+    description: "vcpkg revision to checkout."
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
+  - name: Get latest Github release
+    uses: pozetroninc/github-action-get-latest-release@v0.6.0
+    id: get-latest-vcpkg-release
+    with:
+      repository: microsoft/vcpkg
+      excludes: prerelease, draft
+  - name: Determine checkout tag
+    shell: bash
+    id: determine-checkout-revision
+    run: |
+      if [[ "${{ inputs.revision }}" != "" ]]; then
+        echo "::set-output name=vcpkg-revision::${{ inputs.revision }}"
+      else
+        echo "::set-output name=vcpkg-revision::${{ steps.get-latest-vcpkg-release.outputs.release }}"
+      fi
   - name: checkout-vcpkg
     uses: actions/checkout@v3
     with:
       path: ${{ github.workspace }}/vcpkg
       repository: microsoft/vcpkg
-      fetch-depth: 1
+      ref: '${{ steps.determine-checkout-revision.outputs.vcpkg-revision }}'
+      fetch-depth: 1 
   - name: bootstrap-vcpkg-win
     if: runner.os == 'Windows'
     working-directory: ${{ github.workspace }}\vcpkg
