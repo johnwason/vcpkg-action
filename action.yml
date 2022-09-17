@@ -30,6 +30,8 @@ runs:
     with:
       repository: microsoft/vcpkg
       excludes: prerelease, draft
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: Determine checkout tag
     shell: bash
     id: determine-checkout-revision
@@ -39,6 +41,8 @@ runs:
       else
         echo "::set-output name=vcpkg-revision::${{ steps.get-latest-vcpkg-release.outputs.release }}"
       fi
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: checkout-vcpkg
     uses: actions/checkout@v3
     with:
@@ -46,16 +50,22 @@ runs:
       repository: microsoft/vcpkg
       ref: '${{ steps.determine-checkout-revision.outputs.vcpkg-revision }}'
       fetch-depth: 1 
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: bootstrap-vcpkg-win
     if: runner.os == 'Windows'
     working-directory: ${{ github.workspace }}\vcpkg
     run: bootstrap-vcpkg.bat
     shell: cmd
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: bootstrap-vcpkg-unix
     if: runner.os != 'Windows'
     working-directory: ${{ github.workspace }}/vcpkg
     run: ./bootstrap-vcpkg.sh
     shell: bash
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-win
     if: runner.os == 'Windows'
     working-directory: ${{ github.workspace }}\vcpkg
@@ -63,7 +73,9 @@ runs:
     run: |
       set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
       mkdir %VCPKG_DEFAULT_BINARY_CACHE%
-      vcpkg install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix
     if: runner.os != 'Windows'
     working-directory: ${{ github.workspace }}/vcpkg
@@ -71,7 +83,9 @@ runs:
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
       mkdir $VCPKG_DEFAULT_BINARY_CACHE
-      ./vcpkg install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: cache-vcpkg-archives
     if: ${{ inputs.disable_cache != 'true' }}
     id: cache-vcpkg-archives
@@ -79,17 +93,23 @@ runs:
     with:
       path: ${{ github.workspace }}/vcpkg_cache
       key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles('vcpkg/vcpkg_dry_run.txt') }}
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-win
     if: runner.os == 'Windows'
     shell: cmd
     working-directory: ${{ github.workspace }}\vcpkg
     run: |
       set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
-      vcpkg install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-unix
     if: runner.os != 'Windows'
     shell: bash
     working-directory: ${{ github.workspace }}/vcpkg
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
-      ./vcpkg install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
