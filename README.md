@@ -22,7 +22,7 @@ Simple usage example:
 
 ```yaml
 - name: vcpkg build
-  uses: johnwason/vcpkg-action@v2
+  uses: johnwason/vcpkg-action@v3
   with:
     pkgs: boost-date-time boost-system
     triplet: x64-windows-release
@@ -31,7 +31,7 @@ Simple usage example:
 ## Usage
 
 ```yaml
-- uses: johnwason/vcpkg-action@v2
+- uses: johnwason/vcpkg-action@v3
   with:
     # The vcpkg packages to build, separated by spaces
     pkgs: ''
@@ -69,7 +69,7 @@ jobs:
           vcpkg_triplet: x64-windows-release
     steps:
       - name: vcpkg build
-        uses: johnwason/vcpkg-action@v2
+        uses: johnwason/vcpkg-action@v3
         with:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
