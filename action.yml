@@ -44,9 +44,9 @@ runs:
     id: determine-checkout-revision
     run: |
       if [[ "${{ inputs.revision }}" != "" ]]; then
-        echo "vcpkg-revision=${{ inputs.revision }}" >> $GITHUB_STATE
+        echo "vcpkg-revision=${{ inputs.revision }}" >> $GITHUB_OUTPUT
       else
-        echo "vcpkg-revision=${{ steps.get-latest-vcpkg-release.outputs.tag_name }}" >> $GITHUB_STATE
+        echo "vcpkg-revision=${{ steps.get-latest-vcpkg-release.outputs.tag_name }}" >> $GITHUB_OUTPUT
       fi
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
