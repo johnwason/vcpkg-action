@@ -22,7 +22,7 @@ inputs:
     required: false
     default: ''
   token:
-    description: "GitHub token to authenticate API requests. Recommended to use ${{ github.token }}"
+    description: "GitHub token to authenticate API requests. Recommended to use  github.token "
     required: false
     default: ''
 runs:
