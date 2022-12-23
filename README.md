@@ -26,6 +26,7 @@ Simple usage example:
   with:
     pkgs: boost-date-time boost-system
     triplet: x64-windows-release
+    token: ${{ github.token }}
 ```
 
 ## Usage
@@ -46,6 +47,9 @@ Simple usage example:
     # vcpkg revision to checkout
     # A valid git ref; if empty, it defaults to the latest vcpkg stable release.
     revision: ''
+    # GitHub token to authenticate API requests. This is necessary to determine vcpkg version to checkout
+    # Recommended to use ${{ github.token }}
+    token: ''
 
 ```
 
@@ -75,5 +79,6 @@ jobs:
           triplet: ${{ matrix.config.vcpkg_triplet }}
           cache-key: ${{ matrix.config.os }}
           revision: master
+          token: ${{ github.token }}
 ```
 
