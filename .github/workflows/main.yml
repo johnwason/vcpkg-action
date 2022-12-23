@@ -61,7 +61,7 @@ jobs:
 
   test-manifest:
     runs-on: ${{ matrix.config.os }}
-    name: test-vcpkg-action-latest-vcpkg-release
+    name: test-manifest
     strategy:
       matrix:
         config:
