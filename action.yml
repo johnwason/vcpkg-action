@@ -141,7 +141,7 @@ runs:
     working-directory: ${{ github.workspace }}/vcpkg
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
-      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed
+      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-win
@@ -159,6 +159,6 @@ runs:
     working-directory: ${{ github.workspace }}/vcpkg
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
-      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
