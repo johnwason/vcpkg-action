@@ -136,7 +136,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-unix
-    if: runner.os != 'Windows' && && inputs.manifest-dir == ''
+    if: runner.os != 'Windows' && inputs.manifest-dir == ''
     shell: bash
     working-directory: ${{ github.workspace }}/vcpkg
     run: |
