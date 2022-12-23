@@ -21,25 +21,32 @@ inputs:
     description: "vcpkg revision to checkout."
     required: false
     default: ''
+  token:
+    description: "GitHub token to authenticate API requests. Recommended to use  github.token "
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
   - name: Get latest Github release
-    uses: pozetroninc/github-action-get-latest-release@v0.6.0
+    uses: cardinalby/git-get-release-action@v1
     id: get-latest-vcpkg-release
-    with:
-      repository: microsoft/vcpkg
-      excludes: prerelease, draft
     env:
+      GITHUB_TOKEN: ${{ inputs.token }}
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+    with:
+      latest: true
+      repo: microsoft/vcpkg
+      prerelease: false
+      draft: false    
   - name: Determine checkout tag
     shell: bash
     id: determine-checkout-revision
     run: |
       if [[ "${{ inputs.revision }}" != "" ]]; then
-        echo "::set-output name=vcpkg-revision::${{ inputs.revision }}"
+        echo "vcpkg-revision=${{ inputs.revision }}" >> $GITHUB_OUTPUT
       else
-        echo "::set-output name=vcpkg-revision::${{ steps.get-latest-vcpkg-release.outputs.release }}"
+        echo "vcpkg-revision=${{ steps.get-latest-vcpkg-release.outputs.tag_name }}" >> $GITHUB_OUTPUT
       fi
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
