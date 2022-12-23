@@ -82,6 +82,6 @@ jobs:
           manifest-dir: ${{ github.workspace }}/.github/manifest
       - name: cmake configure
         run: >
-          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake 
+          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
           -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF
           -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
