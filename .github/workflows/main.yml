@@ -32,3 +32,29 @@ jobs:
         if: runner.os == 'Windows'
         shell: cmd
         run: tree
+
+  test-latest-vcpkg-release:
+    runs-on: ${{ matrix.config.os }}
+    name: test-vcpkg-action-latest-vcpkg-release
+    strategy:
+      matrix:
+        config:
+        - os: ubuntu-20.04
+          vcpkg_triplet: x64-linux-release
+        - os: macos-11
+          vcpkg_triplet: x64-osx-release
+        - os: windows-2019
+          vcpkg_triplet: x64-windows-release
+    steps:
+      - uses: actions/checkout@v3
+      - name: vcpkg build
+        uses: ./
+        with:
+          pkgs: boost-date-time
+          triplet: ${{ matrix.config.vcpkg_triplet }}
+          cache-key: ${{ matrix.config.os }}
+          token: ${{ github.token }}
+      - name: tree
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: tree
