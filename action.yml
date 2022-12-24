@@ -170,4 +170,4 @@ runs:
     shell: bash
     id: vcpkg-cmake-config
     run: |
-      echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
+      echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ inputs.triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
