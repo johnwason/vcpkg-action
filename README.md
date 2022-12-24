@@ -15,6 +15,14 @@ features:
  -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<triplet> -DVCPKG_MANIFEST_MODE=OFF
 ```
 
+An output `vcpkg-cmake-config` is also created to simplify setting cmake configuration settings. Example usage:
+
+```
+cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S <src_dir> -B <build_dir>
+```
+
+Include other configuration settings as normal in the cmake command. The vcpkg-action step must have the id `vcpkg`.
+
 Another directory named `vcpkg_cache` is created in the workspace root. This directory is used to store the cache files, 
 and is cached using `pat-s/always-upload-cache@v3`. The cache key is automatically generated, 
 but can also be modified using the `cache-key` argument.
@@ -24,6 +32,7 @@ Simple usage example:
 ```yaml
 - name: vcpkg build
   uses: johnwason/vcpkg-action@v3
+  id: vcpkg
   with:
     pkgs: boost-date-time boost-system
     triplet: x64-windows-release
@@ -34,6 +43,7 @@ Simple manifest example:
 
 ```yaml
 - name: vcpkg build
+  id: vcpkg
   uses: johnwason/vcpkg-action@v3
   with:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
@@ -89,6 +99,7 @@ jobs:
     steps:
       - name: vcpkg build
         uses: johnwason/vcpkg-action@v3
+        id: vcpkg
         with:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
