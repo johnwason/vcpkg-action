@@ -32,7 +32,7 @@ inputs:
 outputs:
   vcpkg-cmake-config:
     description: Configure options for cmake to use vcpkg
-    value: ${{ steps.vcpkg-cmake-config.outputs.cmake-config }}
+    value: ${{ steps.vcpkg-cmake-config.outputs.vcpkg-cmake-config }}
 runs:
   using: "composite"
   steps:
