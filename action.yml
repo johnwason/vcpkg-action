@@ -29,6 +29,10 @@ inputs:
     description: Directory containing vcpkg.json manifest file. Cannot be used with pkgs.
     required: false
     default: ''
+outputs:
+  vcpkg-cmake-config:
+    description: Configure options for cmake to use vcpkg
+    value: ${{ steps.vcpkg-cmake-config.outputs.cmake-config }}
 runs:
   using: "composite"
   steps:
@@ -162,3 +166,8 @@ runs:
       "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+  - name: vcpkg cmake configure 
+    shell: bash
+    id: vcpkg-cmake-config
+    run: |
+      echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
