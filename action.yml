@@ -2,8 +2,8 @@ name: vcpkg-action
 description: Simple action to run vcpkg and cache results
 inputs:
   pkgs:
-    description: "List of packages to build, separated by spaces"
-    required: true
+    description: "List of packages to build, separated by spaces. Cannot be used with manifest-dir"
+    required: false
   triplet:
     description: "vcpkg triplet to use"
     required: true
@@ -23,6 +23,10 @@ inputs:
     default: ''
   token:
     description: "GitHub token to authenticate API requests. Recommended to use  github.token "
+    required: false
+    default: ''
+  manifest-dir:
+    description: Directory containing vcpkg.json manifest file. Cannot be used with pkgs.
     required: false
     default: ''
 runs:
@@ -74,7 +78,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-win
-    if: runner.os == 'Windows'
+    if: runner.os == 'Windows' && inputs.manifest-dir == ''
     working-directory: ${{ github.workspace }}\vcpkg
     shell: cmd
     run: |
@@ -84,13 +88,33 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix
-    if: runner.os != 'Windows'
+    if: runner.os != 'Windows' && inputs.manifest-dir == ''
     working-directory: ${{ github.workspace }}/vcpkg
     shell: bash
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
       mkdir $VCPKG_DEFAULT_BINARY_CACHE
       "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+  - name: vcpkg-dry-run-win-manifest
+    if: runner.os == 'Windows' && inputs.manifest-dir != ''
+    working-directory: ${{ github.workspace }}\vcpkg
+    shell: cmd
+    run: |
+      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
+      mkdir %VCPKG_DEFAULT_BINARY_CACHE%
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}\vcpkg\installed > vcpkg_dry_run.txt
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+  - name: vcpkg-dry-run-unix-manifest
+    if: runner.os != 'Windows' && inputs.manifest-dir != ''
+    working-directory: ${{ github.workspace }}/vcpkg
+    shell: bash
+    run: |
+      export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
+      mkdir $VCPKG_DEFAULT_BINARY_CACHE
+      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed > vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: cache-vcpkg-archives
@@ -103,7 +127,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-win
-    if: runner.os == 'Windows'
+    if: runner.os == 'Windows' && inputs.manifest-dir == ''
     shell: cmd
     working-directory: ${{ github.workspace }}\vcpkg
     run: |
@@ -112,11 +136,29 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: build-vcpkg-unix
-    if: runner.os != 'Windows'
+    if: runner.os != 'Windows' && inputs.manifest-dir == ''
     shell: bash
     working-directory: ${{ github.workspace }}/vcpkg
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
       "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }}
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+  - name: build-vcpkg-win
+    if: runner.os == 'Windows' && inputs.manifest-dir != ''
+    shell: cmd
+    working-directory: ${{ github.workspace }}\vcpkg
+    run: |
+      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
+  - name: build-vcpkg-unix
+    if: runner.os != 'Windows' && inputs.manifest-dir != ''
+    shell: bash
+    working-directory: ${{ github.workspace }}/vcpkg
+    run: |
+      export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
+      "${{ github.workspace }}/vcpkg/vcpkg" install --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
