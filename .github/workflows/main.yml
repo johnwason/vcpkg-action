@@ -21,6 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: vcpkg build
+        id: vcpkg
         uses: ./
         with:
           pkgs: boost-date-time
@@ -34,9 +35,7 @@ jobs:
         run: tree
       - name: cmake configure
         run: >
-          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
-          -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF
-          -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
 
   test-latest-vcpkg-release:
     runs-on: ${{ matrix.config.os }}
@@ -53,6 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: vcpkg build
+        id: vcpkg
         uses: ./
         with:
           pkgs: boost-date-time
@@ -65,9 +65,7 @@ jobs:
         run: tree
       - name: cmake configure
         run: >
-          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
-          -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF
-          -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
 
   test-manifest:
     runs-on: ${{ matrix.config.os }}
@@ -84,6 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: vcpkg build
+        id: vcpkg
         uses: ./
         with:
           triplet: ${{ matrix.config.vcpkg_triplet }}
@@ -92,6 +91,4 @@ jobs:
           manifest-dir: ${{ github.workspace }}/.github/manifest
       - name: cmake configure
         run: >
-          cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
-          -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }} -DVCPKG_MANIFEST_MODE=OFF
-          -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
