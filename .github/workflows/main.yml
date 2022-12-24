@@ -35,7 +35,7 @@ jobs:
         run: tree
       - name: cmake configure
         run: >
-          cmake ${{ steps.vcpkg.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
 
   test-latest-vcpkg-release:
     runs-on: ${{ matrix.config.os }}
@@ -65,7 +65,7 @@ jobs:
         run: tree
       - name: cmake configure
         run: >
-          cmake ${{ steps.vcpkg.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
 
   test-manifest:
     runs-on: ${{ matrix.config.os }}
@@ -91,4 +91,4 @@ jobs:
           manifest-dir: ${{ github.workspace }}/.github/manifest
       - name: cmake configure
         run: >
-          cmake ${{ steps.vcpkg.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
+          cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build 
