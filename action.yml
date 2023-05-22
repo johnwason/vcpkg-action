@@ -84,11 +84,11 @@ runs:
   - name: vcpkg-dry-run-win
     if: runner.os == 'Windows' && inputs.manifest-dir == ''
     working-directory: ${{ github.workspace }}\vcpkg
-    shell: cmd
+    shell: powershell
     run: |
-      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
-      mkdir %VCPKG_DEFAULT_BINARY_CACHE%
-      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+      $VCPKG_DEFAULT_BINARY_CACHE = "${{ github.workspace }}\vcpkg_cache"
+      mkdir $VCPKG_DEFAULT_BINARY_CACHE
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} | Tee-Object -FilePath vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix
@@ -98,17 +98,17 @@ runs:
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
       mkdir $VCPKG_DEFAULT_BINARY_CACHE
-      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} > vcpkg_dry_run.txt
+      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} | tee vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-win-manifest
     if: runner.os == 'Windows' && inputs.manifest-dir != ''
     working-directory: ${{ github.workspace }}\vcpkg
-    shell: cmd
+    shell: powershell
     run: |
-      set VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg_cache
-      mkdir %VCPKG_DEFAULT_BINARY_CACHE%
-      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}\vcpkg\installed > vcpkg_dry_run.txt
+      $VCPKG_DEFAULT_BINARY_CACHE = "${{ github.workspace }}\vcpkg_cache"
+      mkdir $VCPKG_DEFAULT_BINARY_CACHE
+      "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}\vcpkg\installed | Tee-Object -FilePath vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix-manifest
@@ -118,7 +118,7 @@ runs:
     run: |
       export VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}/vcpkg_cache
       mkdir $VCPKG_DEFAULT_BINARY_CACHE
-      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed > vcpkg_dry_run.txt
+      "${{ github.workspace }}/vcpkg/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/vcpkg/installed | tee vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: cache-vcpkg-archives
