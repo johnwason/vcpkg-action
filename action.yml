@@ -33,6 +33,9 @@ outputs:
   vcpkg-cmake-config:
     description: Configure options for cmake to use vcpkg
     value: ${{ steps.vcpkg-cmake-config.outputs.vcpkg-cmake-config }}
+  vcpkg-cache-hash:
+    description: Hash of the vcpkg cache key
+    value: ${{ steps.vcpkg-cmake-config.outputs.vcpkg-cache-hash }}
 runs:
   using: "composite"
   steps:
@@ -171,3 +174,4 @@ runs:
     id: vcpkg-cmake-config
     run: |
       echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ inputs.triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
+      echo "vcpkg-cache-hash=${{ hashFiles('vcpkg/vcpkg_dry_run.txt') }}-${{ inputs.cache-key }}" >> $GITHUB_OUTPUT
