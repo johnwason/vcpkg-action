@@ -93,7 +93,7 @@ runs:
     uses: actions/github-script@v6
     with:
       script: |
-        core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}\vcpkg_cache");
+        core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}/vcpkg_cache");
   - name: vcpkg-dry-run-win
     if: runner.os == 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache != 'true' && inputs.github-binarycache != true
     working-directory: ${{ github.workspace }}\vcpkg
