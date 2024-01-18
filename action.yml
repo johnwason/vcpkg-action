@@ -136,7 +136,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: Export GitHub Actions cache environment variables
-    if:   inputs.github-binarycache == 'true' || inputs.github-binarycache == true
+    if: (inputs.disable_cache != 'true' && inputs.disable_cache != true) &&  (inputs.github-binarycache == 'true' || inputs.github-binarycache == true)
     uses: actions/github-script@v6
     with:
       script: |
