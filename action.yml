@@ -32,7 +32,7 @@ inputs:
   github-binarycache:
     description: "GitHub binary cache to use. If not specified, will use the dry-run based file cache."
     required: false
-    default: 'false'
+    default: ''
 outputs:
   vcpkg-cmake-config:
     description: Configure options for cmake to use vcpkg
@@ -89,13 +89,13 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: set-binarycache-variable
-    if: inputs.gitlab-binarycache == 'false'
+    if: inputs.gitlab-binarycache != 'true'
     uses: actions/github-script@v6
     with:
       script: |
         core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}\vcpkg_cache");
   - name: vcpkg-dry-run-win
-    if: runner.os == 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache == 'false'
+    if: runner.os == 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache != 'true'
     working-directory: ${{ github.workspace }}\vcpkg
     shell: powershell
     run: |
@@ -104,7 +104,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix
-    if: runner.os != 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache == 'false'
+    if: runner.os != 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache != 'true'
     working-directory: ${{ github.workspace }}/vcpkg
     shell: bash
     run: |
@@ -113,7 +113,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-win-manifest
-    if: runner.os == 'Windows' && inputs.manifest-dir != '' && inputs.github-binarycache == 'false'
+    if: runner.os == 'Windows' && inputs.manifest-dir != '' && inputs.github-binarycache != 'true'
     working-directory: ${{ github.workspace }}\vcpkg
     shell: powershell
     run: |
@@ -122,7 +122,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix-manifest
-    if: runner.os != 'Windows' && inputs.manifest-dir != '' && inputs.github-binarycache == 'false'
+    if: runner.os != 'Windows' && inputs.manifest-dir != '' && inputs.github-binarycache != 'true'
     working-directory: ${{ github.workspace }}/vcpkg
     shell: bash
     run: |
@@ -131,7 +131,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: cache-vcpkg-archives
-    if: ${{ inputs.disable_cache != 'true' }} && inputs.github-binarycache == 'false'
+    if: ${{ inputs.disable_cache != 'true' }} && inputs.github-binarycache != 'true'
     id: cache-vcpkg-archives
     uses: pat-s/always-upload-cache@v3
     with:
