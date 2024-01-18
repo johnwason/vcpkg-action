@@ -30,7 +30,7 @@ inputs:
     required: false
     default: ''
   github-binarycache:
-    description: "GitHub binary cache to use. If not specified, will use the dry-run based file cache."
+    description: "Use vcpkg built-in GitHub binary caching. If not specified, will use the dry-run based file cache."
     required: false
     default: ''
 outputs:
@@ -136,7 +136,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: Export GitHub Actions cache environment variables
-    if:   inputs.github-binarycache != 'false'
+    if:   inputs.github-binarycache == 'true' || inputs.github-binarycache == true
     uses: actions/github-script@v6
     with:
       script: |

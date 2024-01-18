@@ -4,8 +4,7 @@
 features:
 
 * Simplicity
-* Use of a "dry-run" build to generate a unique cache key for the configuration. This guarantees that if packages
-  change, the cache will be rebuilt, but avoids rebuilding when it isn't necessary.
+* Uses vcpkg built-in GitHub caching feature (NEW) OR Use of a "dry-run" build to generate a unique cache key for the configuration. 
 * Optionally supports reading `vcpkg.json` manifest files
 
 `vcpkg` is cloned to the `${{ github.workspace }}\vcpkg` directory, and the build products are located in
@@ -37,6 +36,7 @@ Simple usage example:
     pkgs: boost-date-time boost-system
     triplet: x64-windows-release
     token: ${{ github.token }}
+    github-binarycache: true
 ```
 
 Simple manifest example:
@@ -49,6 +49,7 @@ Simple manifest example:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
     token: ${{ github.token }}
+    github-binarycache: true
 ```
 
 
@@ -75,6 +76,9 @@ Simple manifest example:
     token: ''
     # Directory containing vcpkg.json manifest file. Cannot be used with pkgs.
     manifest-dir: ''
+    github-binarycache: ''
+    # "Use vcpkg built-in GitHub binary caching if "true". If not specified, will use the dry-run based file cache."
+    # Recommended set to "true"
 
 ```
 
@@ -106,5 +110,6 @@ jobs:
           cache-key: ${{ matrix.config.os }}
           revision: master
           token: ${{ github.token }}
+          github-binarycache: true
 ```
 
