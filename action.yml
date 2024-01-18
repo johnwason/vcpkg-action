@@ -89,7 +89,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: set-binarycache-variable
-    if: inputs.gitlab-binarycache != 'true' && inputs.gitlab-binarycache != true
+    if: inputs.github-binarycache != 'true' && inputs.github-binarycache != true
     uses: actions/github-script@v6
     with:
       script: |
