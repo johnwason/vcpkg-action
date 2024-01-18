@@ -103,7 +103,7 @@ runs:
     working-directory: ${{ github.workspace }}\vcpkg
     shell: powershell
     run: |
-      mkdir $Env:VCPKG_DEFAULT_BINARY_CACHE
+      mkdir -Force $Env:VCPKG_DEFAULT_BINARY_CACHE
       & "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} ${{ inputs.pkgs }} | Tee-Object -FilePath vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
@@ -121,7 +121,7 @@ runs:
     working-directory: ${{ github.workspace }}\vcpkg
     shell: powershell
     run: |
-      mkdir $Env:VCPKG_DEFAULT_BINARY_CACHE
+      mkdir -Force $Env:VCPKG_DEFAULT_BINARY_CACHE
       & "${{ github.workspace }}/vcpkg/vcpkg.exe" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}\vcpkg\installed | Tee-Object -FilePath vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
