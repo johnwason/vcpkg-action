@@ -33,6 +33,10 @@ inputs:
     description: "Use vcpkg built-in GitHub binary caching. If not specified, will use the dry-run based file cache."
     required: false
     default: ''
+  fetch-depth:
+    description: "Fetch depth for vcpkg checkout"
+    required: false
+    default: "1"
 outputs:
   vcpkg-cmake-config:
     description: Configure options for cmake to use vcpkg
@@ -71,7 +75,7 @@ runs:
       path: ${{ github.workspace }}/vcpkg
       repository: microsoft/vcpkg
       ref: '${{ steps.determine-checkout-revision.outputs.vcpkg-revision }}'
-      fetch-depth: 1 
+      fetch-depth: ${{ inputs.fetch-depth }}
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: bootstrap-vcpkg-win

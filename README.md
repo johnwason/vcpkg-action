@@ -76,9 +76,11 @@ Simple manifest example:
     token: ''
     # Directory containing vcpkg.json manifest file. Cannot be used with pkgs.
     manifest-dir: ''
-    github-binarycache: ''
     # "Use vcpkg built-in GitHub binary caching if "true". If not specified, will use the dry-run based file cache."
     # Recommended set to "true"
+    github-binarycache: ''
+    #Fetch depth for vcpkg checkout. Defaults to "1"
+    fetch-depth: '1'
 
 ```
 
