@@ -94,7 +94,7 @@ runs:
     with:
       script: |
         if (process.platform == 'win32') {
-          core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}\\vcpkg_cache");
+          core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}\\\\vcpkg_cache");
         } else {
           core.exportVariable('VCPKG_DEFAULT_BINARY_CACHE', "${{ github.workspace }}/vcpkg_cache");
         }
