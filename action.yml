@@ -104,7 +104,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/vcpkg"
   - name: vcpkg-dry-run-unix
-    if: runner.os != 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache != 'true' inputs.github-binarycache != true
+    if: runner.os != 'Windows' && inputs.manifest-dir == '' && inputs.github-binarycache != 'true' && inputs.github-binarycache != true
     working-directory: ${{ github.workspace }}/vcpkg
     shell: bash
     run: |
