@@ -44,12 +44,13 @@ Simple manifest example:
 ```yaml
 - name: vcpkg build
   id: vcpkg
-  uses: johnwason/vcpkg-action@v6
+  uses: johnwason/vcpkg-action@v7
   with:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
     token: ${{ github.token }}
     github-binarycache: true
+    vcpkg-subdir: _vpk # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
 ```
 
 

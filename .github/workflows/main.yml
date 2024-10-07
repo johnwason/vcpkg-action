@@ -13,19 +13,19 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
         - os: windows-2019
@@ -58,19 +58,19 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
         - os: windows-2019
@@ -102,19 +102,19 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-11
+        - os: macos-12
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
         - os: windows-2019
