@@ -16,23 +16,23 @@ jobs:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: vcpkg build
         id: vcpkg
         uses: ./
@@ -61,23 +61,23 @@ jobs:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: vcpkg build
         id: vcpkg
         uses: ./
@@ -105,23 +105,23 @@ jobs:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: false
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: false
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: false
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
           github-binarycache: true
-        - os: macos-12
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
           github-binarycache: true
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
           github-binarycache: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: vcpkg build
         id: vcpkg
         uses: ./
