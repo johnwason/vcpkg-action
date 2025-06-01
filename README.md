@@ -96,11 +96,11 @@ jobs:
     strategy:
       matrix:
         config:
-        - os: ubuntu-20.04
+        - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
-        - os: macos-11
+        - os: macos-13
           vcpkg_triplet: x64-osx-release
-        - os: windows-2019
+        - os: windows-2022
           vcpkg_triplet: x64-windows-release
     steps:
       - name: vcpkg build
