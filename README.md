@@ -44,7 +44,7 @@ Simple manifest example:
 ```yaml
 - name: vcpkg build
   id: vcpkg
-  uses: johnwason/vcpkg-action@v7
+  uses: johnwason/vcpkg-action@v6
   with:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
