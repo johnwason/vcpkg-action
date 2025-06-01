@@ -50,6 +50,7 @@ Simple manifest example:
     triplet: x64-windows-release
     token: ${{ github.token }}
     github-binarycache: true
+    vcpkg-subdir: _vpk # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
 ```
 
 
