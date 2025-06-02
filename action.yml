@@ -97,8 +97,8 @@ runs:
   - name: set-binarycache-variable
     shell: bash
     run: |
-      echo VCPKG_DEFAULT_BINARY_CACHE='${{ github.workspace }}/vcpkg_cache' >> $GITHUB_ENV
-      mkdir -p '${{ github.workspace }}/vcpkg_cache'
+      echo VCPKG_DEFAULT_BINARY_CACHE='${{ runner.temp }}/vcpkg_cache' >> $GITHUB_ENV
+      mkdir -p '${{ runner.temp }}/vcpkg_cache'
   - name: vcpkg-dry-run-win
     if: runner.os == 'Windows' && inputs.manifest-dir == ''
     working-directory: ${{ github.workspace }}\${{ inputs.vcpkg-subdir }}
@@ -136,8 +136,8 @@ runs:
     id: cache-vcpkg-archives
     uses: actions/cache@v4
     with:
-      path: ${{ github.workspace }}/vcpkg_cache
-      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles('${{ inputs.vcpkg-subdir }}/vcpkg_dry_run.txt') }}-${{ inputs.cache-key }}
+      path: ${{ runner.temp }}/vcpkg_cache
+      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
     env:
       VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
   - name: build-vcpkg-win
