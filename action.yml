@@ -38,6 +38,10 @@ inputs:
     description: "The subdirectory into which to install VCPKG"
     required: false
     default: "vcpkg"
+  collect-logs:
+    description: Collect vcpkg logs and artifacts either 'always', 'on-failure', or 'never'.
+    required: false
+    default: ''
 
 outputs:
   vcpkg-cmake-config:
@@ -178,3 +182,10 @@ runs:
     run: |
       echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ inputs.triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
       echo "vcpkg-cache-hash=${{ hashFiles('${{ inputs.vcpkg-subdir }}/vcpkg_dry_run.txt') }}-${{ inputs.cache-key }}" >> $GITHUB_OUTPUT
+  - uses: actions/upload-artifact@v4
+    id: upload-vcpkg-logs
+    if: ${{ (failure() && (inputs.collect-logs == 'on-failure' || inputs.collect-logs == 'always')) || (inputs.collect-logs == 'always') }}
+    with:
+      name: vcpkg-logs-${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
+      path: "${{ inputs.vcpkg-subdir }}/**/*.log"
+      retention-days: 7
