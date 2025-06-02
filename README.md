@@ -77,7 +77,8 @@ Simple manifest example:
     manifest-dir: ''
     #Fetch depth for vcpkg checkout. Defaults to "1"
     fetch-depth: '1'
-
+    # Collect logs. Can be set to "always", "on-failure", or "never". Defaults to "" for "never".
+    collect-logs: ''
 ```
 
 ## Advanced Example
