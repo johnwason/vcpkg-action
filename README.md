@@ -23,7 +23,7 @@ cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S <src_dir> -B <build_dir>
 Include other configuration settings as normal in the cmake command. The vcpkg-action step must have the id `vcpkg`.
 
 Another directory named `vcpkg_cache` is created in the workspace root. This directory is used to store the cache files, 
-and is cached using `pat-s/always-upload-cache@v3`. The cache key is automatically generated, 
+and is cached using `actions/cache@v4`. The cache key is automatically generated, 
 but can also be modified using the `cache-key` argument.
 
 Simple usage example:
@@ -36,7 +36,6 @@ Simple usage example:
     pkgs: boost-date-time boost-system
     triplet: x64-windows-release
     token: ${{ github.token }}
-    github-binarycache: true
 ```
 
 Simple manifest example:
@@ -49,7 +48,6 @@ Simple manifest example:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
     token: ${{ github.token }}
-    github-binarycache: true
     vcpkg-subdir: _vpk # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
 ```
 
@@ -77,9 +75,6 @@ Simple manifest example:
     token: ''
     # Directory containing vcpkg.json manifest file. Cannot be used with pkgs.
     manifest-dir: ''
-    # "Use vcpkg built-in GitHub binary caching if "true". If not specified, will use the dry-run based file cache."
-    # Recommended set to "true"
-    github-binarycache: ''
     #Fetch depth for vcpkg checkout. Defaults to "1"
     fetch-depth: '1'
 
@@ -113,6 +108,5 @@ jobs:
           cache-key: ${{ matrix.config.os }}
           revision: master
           token: ${{ github.token }}
-          github-binarycache: true
 ```
 
