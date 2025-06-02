@@ -30,7 +30,7 @@ Simple usage example:
 
 ```yaml
 - name: vcpkg build
-  uses: johnwason/vcpkg-action@v6
+  uses: johnwason/vcpkg-action@v7
   id: vcpkg
   with:
     pkgs: boost-date-time boost-system
@@ -43,7 +43,7 @@ Simple manifest example:
 ```yaml
 - name: vcpkg build
   id: vcpkg
-  uses: johnwason/vcpkg-action@v6
+  uses: johnwason/vcpkg-action@v7
   with:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
@@ -55,7 +55,7 @@ Simple manifest example:
 ## Usage
 
 ```yaml
-- uses: johnwason/vcpkg-action@v6
+- uses: johnwason/vcpkg-action@v7
   with:
     # The vcpkg packages to build, separated by spaces. Cannot be used with manifest-dir
     pkgs: ''
@@ -101,7 +101,7 @@ jobs:
           vcpkg_triplet: x64-windows-release
     steps:
       - name: vcpkg build
-        uses: johnwason/vcpkg-action@v6
+        uses: johnwason/vcpkg-action@v7
         id: vcpkg
         with:
           pkgs: boost-date-time
