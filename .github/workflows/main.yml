@@ -15,22 +15,10 @@ jobs:
         config:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
-          github-binarycache: false
         - os: macos-13
           vcpkg_triplet: x64-osx-release
-          github-binarycache: false
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
-          github-binarycache: false
-        - os: ubuntu-22.04
-          vcpkg_triplet: x64-linux-release
-          github-binarycache: true
-        - os: macos-13
-          vcpkg_triplet: x64-osx-release
-          github-binarycache: true
-        - os: windows-2022
-          vcpkg_triplet: x64-windows-release
-          github-binarycache: true
     steps:
       - uses: actions/checkout@v4
       - name: vcpkg build
@@ -39,10 +27,9 @@ jobs:
         with:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
-          cache-key: ${{ matrix.config.os }}
+          cache-key: ${{ matrix.config.os }}-test
           revision: master
           token: ${{ github.token }}
-          github-binarycache: ${{ matrix.config.github-binarycache }}
       - name: tree
         if: runner.os == 'Windows'
         shell: cmd
@@ -60,22 +47,10 @@ jobs:
         config:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
-          github-binarycache: false
         - os: macos-13
           vcpkg_triplet: x64-osx-release
-          github-binarycache: false
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
-          github-binarycache: false
-        - os: ubuntu-22.04
-          vcpkg_triplet: x64-linux-release
-          github-binarycache: true
-        - os: macos-13
-          vcpkg_triplet: x64-osx-release
-          github-binarycache: true
-        - os: windows-2022
-          vcpkg_triplet: x64-windows-release
-          github-binarycache: true
     steps:
       - uses: actions/checkout@v4
       - name: vcpkg build
@@ -84,9 +59,8 @@ jobs:
         with:
           pkgs: boost-date-time
           triplet: ${{ matrix.config.vcpkg_triplet }}
-          cache-key: ${{ matrix.config.os }}
+          cache-key: ${{ matrix.config.os }}-latest-vcpkg-release
           token: ${{ github.token }}
-          github-binarycache: ${{ matrix.config.github-binarycache }}
       - name: tree
         if: runner.os == 'Windows'
         shell: cmd
@@ -104,22 +78,10 @@ jobs:
         config:
         - os: ubuntu-22.04
           vcpkg_triplet: x64-linux-release
-          github-binarycache: false
         - os: macos-13
           vcpkg_triplet: x64-osx-release
-          github-binarycache: false
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
-          github-binarycache: false
-        - os: ubuntu-22.04
-          vcpkg_triplet: x64-linux-release
-          github-binarycache: true
-        - os: macos-13
-          vcpkg_triplet: x64-osx-release
-          github-binarycache: true
-        - os: windows-2022
-          vcpkg_triplet: x64-windows-release
-          github-binarycache: true
     steps:
       - uses: actions/checkout@v4
       - name: vcpkg build
@@ -127,10 +89,9 @@ jobs:
         uses: ./
         with:
           triplet: ${{ matrix.config.vcpkg_triplet }}
-          cache-key: ${{ matrix.config.os }}
+          cache-key: ${{ matrix.config.os }}-manifest
           token: ${{ github.token }}
           manifest-dir: ${{ github.workspace }}/.github/manifest
-          github-binarycache: ${{ matrix.config.github-binarycache }}
       - name: cmake configure
         run: >
           cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S ${{ github.workspace }}/.github/cmake_test -B cmake_build
