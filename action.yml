@@ -131,16 +131,13 @@ runs:
       "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/installed | tee vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
-  - name: Debug - List vcpkg subdir
-    run: ls -l ${{ github.workspace }}/${{ inputs.vcpkg-subdir }}
-    shell: bash
   - name: cache-vcpkg-archives
     if: ${{ inputs.disable_cache != 'true' }}
     id: cache-vcpkg-archives
     uses: actions/cache@v4
     with:
       path: ${{ runner.temp }}/vcpkg_cache
-      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles('${{ inputs.vcpkg-subdir }}/vcpkg_dry_run.txt') }}-${{ inputs.cache-key }}
+      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
     env:
       VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
   - name: build-vcpkg-win
