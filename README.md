@@ -1,6 +1,6 @@
 # vcpkg-action
 
-`vcpkg-action` is a simple action to build and cache vcpkg packages. It supports all platforms. It has two unique
+`vcpkg-action` is a simple action to build and cache vcpkg packages. It supports all platforms. It has unique
 features:
 
 * Simplicity
@@ -79,7 +79,7 @@ Simple manifest example:
     # Collect logs. Can be set to "always", "on-failure", or "never". Defaults to "" for "never".
     collect-logs: ''
     # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
-    vcpkg-subdir: 'vcpkg
+    vcpkg-subdir: 'vcpkg'
 ```
 
 ## Advanced Example
