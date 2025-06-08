@@ -4,7 +4,7 @@
 features:
 
 * Simplicity
-* Uses vcpkg built-in GitHub caching feature (NEW) OR Use of a "dry-run" build to generate a unique cache key for the configuration. 
+* Use of a "dry-run" build to generate a unique cache key for the configuration. 
 * Optionally supports reading `vcpkg.json` manifest files
 
 `vcpkg` is cloned to the `${{ github.workspace }}\vcpkg` directory, and the build products are located in
@@ -22,7 +22,7 @@ cmake ${{ steps.vcpkg.outputs.vcpkg-cmake-config }} -S <src_dir> -B <build_dir>
 
 Include other configuration settings as normal in the cmake command. The vcpkg-action step must have the id `vcpkg`.
 
-Another directory named `vcpkg_cache` is created in the workspace root. This directory is used to store the cache files, 
+Another directory named `vcpkg_cache` is created in the temp directory. This directory is used to store the cache files, 
 and is cached using `actions/cache@v4`. The cache key is automatically generated, 
 but can also be modified using the `cache-key` argument.
 
@@ -48,7 +48,6 @@ Simple manifest example:
     manifest-dir: ${{ github.workspace }} # Set to directory containing vcpkg.json
     triplet: x64-windows-release
     token: ${{ github.token }}
-    vcpkg-subdir: _vpk # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
 ```
 
 
@@ -79,6 +78,8 @@ Simple manifest example:
     fetch-depth: '1'
     # Collect logs. Can be set to "always", "on-failure", or "never". Defaults to "" for "never".
     collect-logs: ''
+    # a subdirectory of the action base folder into which the VCPKG will be installed. Default is 'vcpkg'.
+    vcpkg-subdir: 'vcpkg
 ```
 
 ## Advanced Example
