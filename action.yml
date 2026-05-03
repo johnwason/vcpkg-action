@@ -138,7 +138,7 @@ runs:
   - name: cache-vcpkg-archives
     if: ${{ inputs.disable_cache != 'true' }}
     id: cache-vcpkg-archives
-    uses: actions/cache@v4
+    uses: actions/cache@v5
     with:
       path: ${{ runner.temp }}/vcpkg_cache
       key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
