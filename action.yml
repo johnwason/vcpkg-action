@@ -182,7 +182,7 @@ runs:
     run: |
       echo "vcpkg-cmake-config=-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ inputs.triplet }} -DVCPKG_MANIFEST_MODE=OFF" >> $GITHUB_OUTPUT
       echo "vcpkg-cache-hash=${{ hashFiles('${{ inputs.vcpkg-subdir }}/vcpkg_dry_run.txt') }}-${{ inputs.cache-key }}" >> $GITHUB_OUTPUT
-  - uses: actions/upload-artifact@v4
+  - uses: actions/upload-artifact@v7
     id: upload-vcpkg-logs
     if: ${{ (failure() && (inputs.collect-logs == 'on-failure' || inputs.collect-logs == 'always')) || (inputs.collect-logs == 'always') }}
     with:
