@@ -135,10 +135,10 @@ runs:
       "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/vcpkg" install --dry-run --triplet ${{ inputs.triplet }} ${{ inputs.extra-args }} --x-manifest-root=${{ inputs.manifest-dir }} --x-install-root=${{ github.workspace }}/${{ inputs.vcpkg-subdir }}/installed --x-write-nuget-packages-config=vcpkg_dry_run.txt
     env:
       VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
-  - name: cache-vcpkg-archives
-    if: ${{ inputs.disable_cache != 'true' }}
-    id: cache-vcpkg-archives
-    uses: actions/cache@v5
+  - name: cache-vcpkg-archives-restore
+    if: ${{ inputs.disable-cache != 'true' }}
+    id: cache-vcpkg-archives-restore
+    uses: actions/cache/restore@v5
     with:
       path: ${{ runner.temp }}/vcpkg_cache
       key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
@@ -189,3 +189,12 @@ runs:
       name: vcpkg-logs-${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
       path: "${{ inputs.vcpkg-subdir }}/**/*.log"
       retention-days: 7
+  - name: cache-vcpkg-archives-save
+    if: ${{ inputs.disable-cache != 'true' && success() }}
+    id: cache-vcpkg-archives-save
+    uses: actions/cache/save@v5
+    with:
+      path: ${{ runner.temp }}/vcpkg_cache
+      key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
+    env:
+      VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
