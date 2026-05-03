@@ -20,7 +20,7 @@ jobs:
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: vcpkg build
         id: vcpkg
         uses: ./
@@ -61,7 +61,7 @@ jobs:
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: vcpkg build
         id: vcpkg
         uses: ./
@@ -101,7 +101,7 @@ jobs:
         - os: windows-2022
           vcpkg_triplet: x64-windows-release
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: vcpkg build
         id: vcpkg
         uses: ./
