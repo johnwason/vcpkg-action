@@ -7,8 +7,8 @@ features:
 * Use of a "dry-run" build to generate a unique cache key for the configuration. 
 * Optionally supports reading `vcpkg.json` manifest files
 
-`vcpkg` is cloned to the `${{ github.workspace }}\vcpkg` directory, and the build products are located in
- `${{ github.workspace }}\vcpkg\installed\<triplet>`. For cmake, use the option:
+`vcpkg` is cloned to the `${{ github.workspace }}/vcpkg` directory, and the build products are located in
+ `${{ github.workspace }}/vcpkg/installed/<triplet>`. For cmake, use the option:
 
 ```
  -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<triplet> -DVCPKG_MANIFEST_MODE=OFF
@@ -112,3 +112,17 @@ jobs:
           token: ${{ github.token }}
 ```
 
+## Hints
+
+* Use the `--x-feature=...` option with `extra-args` to enable manifest mode features.
+* Use the `--x-buildtrees-root=...` option with `extra-args` to move the build trees out of the github workspace if path length errors occur.
+* Use the `--clean-after-build` option with `extra-args` to reduce disk space usage for large projects.
+
+When using manifest mode, it is recommended to check out your source to a subdirectory to prevent vcpkg from
+detecting your `vcpkg.json` file. This action overrides the default behavior to provide caching. For example:
+
+```yaml
+  - uses: actions/checkout@v6
+    with:
+      path: my_src
+```
