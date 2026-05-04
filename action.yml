@@ -190,7 +190,7 @@ runs:
       path: "${{ inputs.vcpkg-subdir }}/**/*.log"
       retention-days: 7
   - name: cache-vcpkg-archives-save
-    if: ${{ inputs.disable-cache != 'true' && success() }}
+    if: ${{ inputs.disable-cache != 'true' && success() && steps.cache-vcpkg-archives-restore.outputs.cache-hit != 'true'}}
     id: cache-vcpkg-archives-save
     uses: actions/cache/save@v5
     with:
