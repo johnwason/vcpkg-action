@@ -76,7 +76,7 @@ runs:
     env:
       VCPKG_ROOT: "${{ github.workspace }}/${{ inputs.vcpkg-subdir }}"
   - name: checkout-vcpkg
-    uses: actions/checkout@v6
+    uses: actions/checkout@v7
     with:
       path: ${{ github.workspace }}/${{ inputs.vcpkg-subdir }}
       repository: microsoft/vcpkg
