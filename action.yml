@@ -138,7 +138,7 @@ runs:
   - name: cache-vcpkg-archives-restore
     if: ${{ inputs.disable-cache != 'true' }}
     id: cache-vcpkg-archives-restore
-    uses: actions/cache/restore@v5
+    uses: actions/cache/restore@v6
     with:
       path: ${{ runner.temp }}/vcpkg_cache
       key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
@@ -192,7 +192,7 @@ runs:
   - name: cache-vcpkg-archives-save
     if: ${{ inputs.disable-cache != 'true' && success() && steps.cache-vcpkg-archives-restore.outputs.cache-hit != 'true'}}
     id: cache-vcpkg-archives-save
-    uses: actions/cache/save@v5
+    uses: actions/cache/save@v6
     with:
       path: ${{ runner.temp }}/vcpkg_cache
       key: ${{ runner.os }}-${{ inputs.triplet }}-vcpkg-${{ hashFiles(format('{0}/vcpkg_dry_run.txt',inputs.vcpkg-subdir)) }}-${{ inputs.cache-key }}
